@@ -1,4 +1,4 @@
-@extends ("layout");
+@extends ("layout")
 @section("menu")
     <x-layout.menu class="justify-start">
         <x-form.a_href href="{{route('facturas.create')}}" class="mx-2">Crear factura</x-form.a_href>
@@ -8,7 +8,11 @@
 @endsection
 @section("contenido")
     <tabla
-    {{-- rol={{Auth::user()->role}} --}}
-    consulta="idiomas" filas_serializadas='@json($filas)' campos_serializados='@json($campos)' nombre_tabla="Empleados">
+        consulta="empleados"
+        filas_serializadas='@json($filas)'
+        campos_serializados='@json($campos)'
+        nombre_tabla="Empleados"
+        rol="{{ auth()->user()->getRoleNames()[0] }}"
+    >
     </tabla>
 @endsection

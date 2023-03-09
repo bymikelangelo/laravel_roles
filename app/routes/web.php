@@ -35,6 +35,9 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get("empleados/facturas/{id}", [\App\Http\Controllers\EmpleadoController::class, "get_idiomas"]);
+    Route::get("clientes/facturas/{id}", [\App\Http\Controllers\EmpleadoController::class, "get_facturas"]);
+    Route::get("facturas/clientes/{id}", [\App\Http\Controllers\EmpleadoController::class, "get_clientes"]);
     Route::resource("clientes", \App\Http\Controllers\ClienteController::class);
     Route::resource("facturas", \App\Http\Controllers\FacturaController::class);
     Route::resource("empleados", \App\Http\Controllers\EmpleadoController::class);

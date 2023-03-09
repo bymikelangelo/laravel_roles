@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use App\Models\Empleado;
+use App\Models\Idioma;
 use Illuminate\Http\Request;
 
 class EmpleadoController extends Controller
@@ -20,10 +21,8 @@ class EmpleadoController extends Controller
         unset ($campos['created_at']);
         unset ($campos['updated_at']);
         $campos = array_keys($campos);
-        return view("empresa.empleado.listado",['filas'=>$empleados, 'campos'=>$campos]);
-        //
-
-        //
+        $rol = auth()->user()->getRoleNames()[0];
+        return view("empresa.empleado.listado",['filas'=>$empleados, 'campos'=>$campos, 'rol'=>$rol]);
     }
 
     /**
@@ -90,5 +89,12 @@ class EmpleadoController extends Controller
     public function destroy(Empleado $empleado)
     {
         //
+    }
+
+    public function get_idiomas(int $empleado) {
+        $empleado = Empleado::find($empleado)->first();
+        $idiomas = Idioma::where('empleado_id', $empleado->id)->get();
+
+        return view ("empresa.empleado.idiomas_empleado", ['empleado'=>$empleado, 'idiomas'=>$idiomas]);
     }
 }

@@ -7,11 +7,13 @@
             <caption class="uppercase text-4xl text-green-700">{{ nombre_tabla }}</caption>
             <thead>
             <tr class="">
-                <th class="px-4                      text-3xl text-gray-500
-                     " v-for="(campo, index) in campos">
-                    <input @keyup="filtra(campo, valor[index])" type="text" :size=len_campo[index]
-
-                           v-model='valor[index]' />
+                <th class="px-4 text-3xl text-gray-500" v-for="(campo, index) in campos">
+                    <input
+                        @keyup="filtra(campo, valor[index])"
+                        type="text"
+                        :size=len_campo[index]
+                        v-model='valor[index]'
+                    />
                     <button @click="ordena(campo)">
                         {{ campo }}
                     </button>
@@ -28,15 +30,22 @@
                  px-4 p-2 text-xl text-gray-500  divide-green-600 " v-for="valor in fila">
                     {{ valor }}
                 </td>
-                <td @click="editar(fila.id)" class="text-center self-center  pt-6 h-10v w-5v  fa fa-pencil"
-                    aria-hidden="true">
-                </td>
-                <td @click="borrar(fila.id)" class="text-center self-center  pt-6  h-10v w-5v fas fa-trash-alt"
-                    aria-hidden="true">
-                </td>
-                <td aria-hidden="true">
-                    {{ consulta }}
-                </td>
+                <div v-if="rol==='administrador'">
+                    <td @click="editar(fila.id)" class="text-center self-center  pt-6  w-5v  fa fa-pencil"
+                        aria-hidden="true">
+                    </td>
+                    <td @click="borrar(fila.id)" class="text-center self-center  pt-6   w-5v fas fa-trash-alt"
+                        aria-hidden="true">
+                    </td>
+                </div>
+                <div v-if="rol==='gestor' && (consulta === 'facturas' || consulta === 'clientes')">
+                    <td @click="editar(fila.id)" class="text-center self-center  pt-6  w-5v  fa fa-pencil"
+                        aria-hidden="true">
+                    </td>
+                    <td @click="borrar(fila.id)" class="text-center self-center pt-6  w-5v fas fa-trash-alt"
+                        aria-hidden="true">
+                    </td>
+                </div>
             </tr>
         </table>
     </div>
@@ -44,9 +53,10 @@
 
 <script>
 import axios from 'axios';
+
 export default {
     name: "tabla",
-    props: ['filas_serializadas', 'campos_serializados', 'nombre_tabla', 'consulta'],
+    props: ['rol', 'filas_serializadas', 'campos_serializados', 'nombre_tabla', 'consulta'],
     data() {
         return {
             filas: [],
@@ -102,9 +112,9 @@ export default {
         },
         filtra(campo, valor) {
             // console.log("saludo");
-            console.log("quieres filtrar "+valor + " en el campo "+campo);
+            console.log("quieres filtrar " + valor + " en el campo " + campo);
             this.filas = JSON.parse(this.filas_serializadas);
-            console.log("quieres filtrar "+valor + " en el campo "+campo);
+            console.log("quieres filtrar " + valor + " en el campo " + campo);
             this.filas = this.filas.filter((fila) => {
                     var texto = new String(fila[campo]);
                     // console.log("valor del campo "+texto);
@@ -114,7 +124,17 @@ export default {
                 }
             );
             // console.log("filas "+this.filas);
+        },
+
+        consultar(id) {
+            var url = window.location.href;
+            url = url + "/" + this.consulta + "/" + id;
+            window.location.href = url;
         }
+    },
+
+    mounted() {
+        console.log(this.rol);
     }
 }
 </script>

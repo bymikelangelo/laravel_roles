@@ -1,3 +1,4 @@
+<!-- //a@a.com -> 123456789 -->
 
 @extends ("layout")
 @section("menu")
@@ -5,7 +6,7 @@
 {{--                <h1>Rol: -{{auth()->user()->roles()->get()}}-</h1>--}}
 
         @hasanyrole(["administrador", "gestor"])
-        <x-form.a_href href="{{route('empleados.index')}}" class="mx-2">Empelados</x-form.a_href>
+        <x-form.a_href href="{{route('empleados.index')}}" class="mx-2">Empleados</x-form.a_href>
         @endhasanyrole
 {{--        @role("comercial")--}}
         <x-form.a_href href="{{route('clientes.index')}}" class="mx-2">Clientes</x-form.a_href>
